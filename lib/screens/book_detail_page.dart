@@ -24,7 +24,34 @@ class BookDetailPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Image.network(book.imageUrl, height: 300, fit: BoxFit.cover),
+            Image.network(
+              book.imageUrl,
+              height: 300,
+              fit: BoxFit.cover,
+              loadingBuilder: (context, child, loadingProgress) {
+                if (loadingProgress == null) return child;
+                return Container(
+                  height: 300,
+                  color: Colors.grey[200],
+                  child: const Center(
+                    child: SizedBox(
+                      width: 24,
+                      height: 24,
+                      child: CircularProgressIndicator(strokeWidth: 2.5),
+                    ),
+                  ),
+                );
+              },
+              errorBuilder: (context, error, stackTrace) {
+                return Container(
+                  height: 300,
+                  color: Colors.grey[200],
+                  child: const Center(
+                    child: Icon(Icons.broken_image, size: 56, color: Colors.grey),
+                  ),
+                );
+              },
+            ),
             const SizedBox(height: 20),
             Text(book.title,
                 style:
